@@ -1,0 +1,55 @@
+{
+  "devices": [
+    {
+      "name": "router1",
+      "type": "router",
+      "ip": "172.20.0.11",
+      "config": {
+        "interfaces": {
+          "eth0": "172.20.0.11/16"
+        },
+        "routes": [
+          {"destination": "10.0.0.0/8", "gateway": "172.20.0.12"}
+        ]
+      }
+    },
+    {
+      "name": "router2",
+      "type": "router",
+      "ip": "172.20.0.12",
+      "config": {
+        "interfaces": {
+          "eth0": "172.20.0.12/16"
+        },
+        "routes": [
+          {"destination": "192.168.1.0/24", "gateway": "172.20.0.11"}
+        ]
+      }
+    },
+    {
+      "name": "switch1",
+      "type": "switch",
+      "ip": "172.20.0.13",
+      "config": {
+        "interfaces": {
+          "eth0": "172.20.0.13/16"
+        },
+        "vlans": [10, 20]
+      }
+    },
+    {
+      "name": "server1",
+      "type": "server",
+      "ip": "172.20.0.20",
+      "config": {
+        "services": ["nginx"]
+      }
+    },
+    {
+      "name": "client1",
+      "type": "client",
+      "ip": "172.20.0.30",
+      "config": {}
+    }
+  ]
+}

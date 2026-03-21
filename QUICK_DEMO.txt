@@ -1,0 +1,72 @@
+# INTERVIEW DEMO - QUICK VERSION (5 MINUTES)
+
+## BEFORE interview - Setup (Do this at home)
+
+```
+cd "E:\networking project\python_networking"
+docker-compose up -d
+Start-Sleep -Seconds 30
+```
+
+---
+
+## LIVE DEMO (Show interviewer - 5 minutes total)
+
+### [30 seconds] Show containers running
+```
+docker ps
+```
+
+### [30 seconds] Show code
+```
+cat "network-automation\deploy_simple.py" | head -20
+```
+
+### [2 minutes] Run automation
+```
+cd network-automation
+python deploy_simple.py
+```
+
+### [1 minute] Show proof it worked
+```
+docker exec router1 cat /etc/config-router1.txt
+docker exec router2 cat /etc/config-router2.txt
+```
+
+### [1 minute] Explain output
+> "You just saw Python connecting to 2 real Docker containers and deploying configurations. The same code handles 1000 real switches via SSH. This is Infrastructure-as-Code."
+
+---
+
+## WHAT TO SAY
+
+**"This project demonstrates how to automate network provisioning at scale:**
+
+1. **Inventory** (devices.json) - Define what you want to provision
+2. **Connection** (docker exec / SSH) - Connect to real devices
+3. **Deployment** (Python script) - Push configurations
+4. **Verification** - Prove it worked
+5. **Logging** - Track everything for compliance
+
+This is production-grade automation that Arista customers use daily with CloudVision."
+
+---
+
+## POST interview - Cleanup
+
+```
+docker-compose down
+```
+
+---
+
+## KEY FILES
+
+- `network-automation/deploy_simple.py` - Main automation
+- `network-automation/devices.json` - Device inventory
+- `network-automation/utils/ssh_client.py` - Reusable connection library
+- `network-automation/logs/` - Deployment history
+
+**Total demo time: 5 minutes**  
+**Talking points: See DEMO_COMMANDS.md for full details**

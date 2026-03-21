@@ -1,0 +1,36 @@
+{
+  "devices": [
+    {
+      "name": "router1",
+      "hostname": "localhost",
+      "port": 2201,
+      "username": "root",
+      "password": "root",
+      "type": "frr",
+      "loopback": "10.0.0.1/32",
+      "interfaces": [
+        {
+          "name": "eth0",
+          "ip": "172.20.0.2/24",
+          "description": "Primary Interface"
+        }
+      ]
+    },
+    {
+      "name": "router2",
+      "hostname": "localhost",
+      "port": 2202,
+      "username": "root",
+      "password": "root",
+      "type": "frr",
+      "loopback": "10.0.0.2/32",
+      "interfaces": [
+        {
+          "name": "eth0",
+          "ip": "172.20.0.3/24",
+          "description": "Primary Interface"
+        }
+      ]
+    }
+  ]
+}

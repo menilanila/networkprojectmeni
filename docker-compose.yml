@@ -1,0 +1,105 @@
+version: '3.8'
+
+services:
+  router1:
+    image: ubuntu:22.04
+    container_name: router1
+    hostname: router1
+    networks:
+      lab_network:
+        ipv4_address: 172.20.0.11
+    ports:
+      - "2201:22"
+    environment:
+      - DEBIAN_FRONTEND=noninteractive
+    command: |
+      bash -c "
+      apt-get update && 
+      apt-get install -y openssh-server net-tools iputils-ping traceroute tcpdump jq gnupg2 &&
+      wget https://deb.frrouting.org/frr/keys.asc -O - | apt-key add - &&
+      echo 'deb https://deb.frrouting.org/frr $$(lsb_release -s -c) frr-stable' | tee -a /etc/apt/sources.list.d/frr.sources.list &&
+      apt-get update && apt-get install -y frr &&
+      echo 'root:root' | chpasswd &&
+      mkdir -p /run/sshd &&
+      sed -i 's/#\?PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config &&
+      sed -i 's/#\?PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config &&
+      /usr/sbin/sshd -D
+      "
+    stdin_open: true
+    tty: true
+
+  router2:
+    image: ubuntu:22.04
+    container_name: router2
+    hostname: router2
+    networks:
+      lab_network:
+        ipv4_address: 172.20.0.12
+    ports:
+      - "2202:22"
+    environment:
+      - DEBIAN_FRONTEND=noninteractive
+    command: |
+      bash -c "
+      apt-get update && 
+      apt-get install -y openssh-server net-tools iputils-ping traceroute tcpdump jq gnupg2 &&
+      wget https://deb.frrouting.org/frr/keys.asc -O - | apt-key add - &&
+      echo 'deb https://deb.frrouting.org/frr $$(lsb_release -s -c) frr-stable' | tee -a /etc/apt/sources.list.d/frr.sources.list &&
+      apt-get update && apt-get install -y frr &&
+      echo 'root:root' | chpasswd &&
+      mkdir -p /run/sshd &&
+      sed -i 's/#\?PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config &&
+      sed -i 's/#\?PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config &&
+      /usr/sbin/sshd -D
+      "
+    stdin_open: true
+    tty: true
+
+  switch1:
+    image: ubuntu:22.04
+    container_name: switch1
+    hostname: switch1
+    networks:
+      lab_network:
+        ipv4_address: 172.20.0.13
+    ports:
+      - "2203:22"
+    environment:
+      - DEBIAN_FRONTEND=noninteractive
+    command: |
+      bash -c "
+      apt-get update && 
+      apt-get install -y openssh-server net-tools iputils-ping jq vlan bridge-utils &&
+      echo 'root:root' | chpasswd &&
+      mkdir -p /run/sshd &&
+      sed -i 's/#\?PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config &&
+      /usr/sbin/sshd -D
+      "
+    stdin_open: true
+    tty: true
+
+  server1:
+    image: nginx:latest
+    container_name: server1
+    hostname: server1
+    networks:
+      lab_network:
+        ipv4_address: 172.20.0.20
+    ports:
+      - "8080:80"
+
+  client1:
+    image: alpine:latest
+    container_name: client1
+    hostname: client1
+    networks:
+      lab_network:
+        ipv4_address: 172.20.0.30
+    command: tail -f /dev/null
+
+networks:
+  lab_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
