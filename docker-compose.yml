@@ -15,7 +15,7 @@ services:
     command: |
       bash -c "
       apt-get update && 
-      apt-get install -y openssh-server net-tools iputils-ping traceroute tcpdump jq gnupg2 &&
+      apt-get install -y openssh-server net-tools iproute2 iputils-ping traceroute tcpdump jq gnupg2 &&
       wget https://deb.frrouting.org/frr/keys.asc -O - | apt-key add - &&
       echo 'deb https://deb.frrouting.org/frr jammy frr-stable' | tee -a /etc/apt/sources.list.d/frr.sources.list &&
       apt-get update && apt-get install -y frr &&
@@ -42,7 +42,7 @@ services:
     command: |
       bash -c "
       apt-get update && 
-      apt-get install -y openssh-server net-tools iputils-ping traceroute tcpdump jq gnupg2 &&
+      apt-get install -y openssh-server net-tools iproute2 iputils-ping traceroute tcpdump jq gnupg2 &&
       wget https://deb.frrouting.org/frr/keys.asc -O - | apt-key add - &&
       echo 'deb https://deb.frrouting.org/frr jammy frr-stable' | tee -a /etc/apt/sources.list.d/frr.sources.list &&
       apt-get update && apt-get install -y frr &&

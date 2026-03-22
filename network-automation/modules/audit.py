@@ -23,7 +23,7 @@ def run_audit(inventory_file):
             # Check live physical/virtual data state vs intent payload using pure python to avoid OS shell escaping conflicts
             ok, out = client.execute(name, f"ip -o -4 addr show {intf}")
             if not ok:
-                logger.error(f"[{name}] Audit execution failed: missing daemon or broken command.")
+                print(f"[{name}] Audit execution failed: missing daemon or broken command. Error: {out.strip()}")
                 continue
                 
             # Extract the IP address carefully
