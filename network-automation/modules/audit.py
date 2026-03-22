@@ -20,16 +20,26 @@ def run_audit(inventory_file):
             continue
             
         for intf, expected_ip in interfaces.items():
-            # Check live physical/virtual data state vs intent payload
-            ok, out = client.execute(name, f"ip -o -4 addr show {intf} | awk '{{print $4}}'")
+            # Check live physical/virtual data state vs intent payload using pure python to avoid OS shell escaping conflicts
+            ok, out = client.execute(name, f"ip -o -4 addr show {intf}")
             if not ok:
                 logger.error(f"[{name}] Audit execution failed: missing daemon or broken command.")
                 continue
                 
-            actual_ip = out.strip()
+            # Extract the IP address carefully
+            actual_ip = ""
+            for line in out.splitlines():
+                if intf in line and "inet " in line:
+                    parts = line.split()
+                    try:
+                        idx = parts.index("inet")
+                        actual_ip = parts[idx + 1]
+                    except ValueError:
+                        pass
+                        
             if actual_ip == expected_ip:
-                logger.info(f"[{name}] MATCH: {intf} correctly configured with {expected_ip}")
+                print(f"[{name}] MATCH: {intf} correctly configured with {expected_ip}")
             else:
-                logger.warning(f"[{name}] DRIFT DETECTED: {intf} expected {expected_ip}, found '{actual_ip}'")
+                print(f"[{name}] DRIFT DETECTED: {intf} expected {expected_ip}, found '{actual_ip}'")
                 
     logger.info("=== AUDIT FINISHED ===\n")

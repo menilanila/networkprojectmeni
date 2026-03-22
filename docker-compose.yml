@@ -17,7 +17,7 @@ services:
       apt-get update && 
       apt-get install -y openssh-server net-tools iputils-ping traceroute tcpdump jq gnupg2 &&
       wget https://deb.frrouting.org/frr/keys.asc -O - | apt-key add - &&
-      echo 'deb https://deb.frrouting.org/frr $$(lsb_release -s -c) frr-stable' | tee -a /etc/apt/sources.list.d/frr.sources.list &&
+      echo 'deb https://deb.frrouting.org/frr jammy frr-stable' | tee -a /etc/apt/sources.list.d/frr.sources.list &&
       apt-get update && apt-get install -y frr &&
       echo 'root:root' | chpasswd &&
       mkdir -p /run/sshd &&
@@ -44,7 +44,7 @@ services:
       apt-get update && 
       apt-get install -y openssh-server net-tools iputils-ping traceroute tcpdump jq gnupg2 &&
       wget https://deb.frrouting.org/frr/keys.asc -O - | apt-key add - &&
-      echo 'deb https://deb.frrouting.org/frr $$(lsb_release -s -c) frr-stable' | tee -a /etc/apt/sources.list.d/frr.sources.list &&
+      echo 'deb https://deb.frrouting.org/frr jammy frr-stable' | tee -a /etc/apt/sources.list.d/frr.sources.list &&
       apt-get update && apt-get install -y frr &&
       echo 'root:root' | chpasswd &&
       mkdir -p /run/sshd &&
